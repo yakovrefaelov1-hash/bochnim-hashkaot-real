@@ -1,0 +1,8 @@
+{
+  "/not-found": "app/not-found.js",
+  "/providers/page": "app/providers/page.js",
+  "/tenders/page": "app/tenders/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/subscribe/page": "app/subscribe/page.js"
+}
