@@ -10,6 +10,7 @@ const nextConfig = {
     domains: ['images.unsplash.com', 'res.cloudinary.com', 'supabase.co'],
   },
   async rewrites() {
+    if (!process.env.NEXT_PUBLIC_API_URL) return [];
     return [
       {
         source: '/api/:path*',
