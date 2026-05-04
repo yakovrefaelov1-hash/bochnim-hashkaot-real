@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
@@ -21,6 +21,7 @@ export function Header() {
           <Link href="/past-deals" style={{color:"#475569",textDecoration:"none"}}>עסקאות מוצלחות</Link>
           <Link href="/providers" style={{color:"#475569",textDecoration:"none"}}>ספקים</Link>
           <Link href="/tenders" style={{color:"#475569",textDecoration:"none"}}>מכרזים פעילים</Link>
+          <Link href="/blog" style={{color:"#475569",textDecoration:"none"}}>בלוג</Link>
         </nav>
         <div style={{display:"flex",alignItems:"center",gap:"12px"}}>
           <Link href="/post-tender" style={{background:"linear-gradient(135deg,#f5a623,#e8920f)",color:"white",padding:"8px 20px",borderRadius:"10px",textDecoration:"none",fontWeight:"bold",fontSize:"0.9rem"}}>

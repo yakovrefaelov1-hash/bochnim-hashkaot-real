@@ -1,1 +1,36 @@
-﻿export function StatsBar({ stats }: { stats?: any }) { const fmt=(n:number)=>n>=1000000?`${(n/1000000).toFixed(1)}M`:n>=1000?`${(n/1000).toFixed(0)}K`:String(n); return (<div style={{background:"#1a2e44",color:"white",padding:"24px 0"}}><div style={{maxWidth:"1200px",margin:"0 auto",padding:"0 24px",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"24px",textAlign:"center"}}><div><div style={{fontSize:"2rem",fontWeight:"bold",color:"#f5a623"}}>{stats?.total_deals ?? 0}+</div><div style={{fontSize:"0.85rem",color:"#aaa",marginTop:"4px"}}>עסקאות שנסגרו</div></div><div><div style={{fontSize:"2rem",fontWeight:"bold",color:"#f5a623"}}>{stats?.avg_return ?? 0}%</div><div style={{fontSize:"0.85rem",color:"#aaa",marginTop:"4px"}}>תשואה ממוצעת</div></div><div><div style={{fontSize:"2rem",fontWeight:"bold",color:"#f5a623"}}>{stats?.total_invested ? fmt(stats.total_invested) : 0}</div><div style={{fontSize:"0.85rem",color:"#aaa",marginTop:"4px"}}>הושקע בסך הכל</div></div><div><div style={{fontSize:"2rem",fontWeight:"bold",color:"#f5a623"}}>{stats?.max_return ?? 0}%</div><div style={{fontSize:"0.85rem",color:"#aaa",marginTop:"4px"}}>תשואה מקסימלית</div></div></div></div>); }
+export function StatsBar({ stats }: { stats?: {
+  total_deals?: number;
+  avg_return?: number;
+  total_invested?: number;
+  max_return?: number;
+} }) {
+  const fmt = (n: number) =>
+    n >= 1000000 ? `${(n / 1000000).toFixed(1)}M` :
+    n >= 1000 ? `${(n / 1000).toFixed(0)}K` :
+    String(n);
+
+  const items = [
+    { value: `${stats?.total_deals ?? 0}+`, label: 'עסקאות שנסגרו' },
+    { value: `${stats?.avg_return ?? 0}%`, label: 'תשואה ממוצעת' },
+    { value: stats?.total_invested ? fmt(stats.total_invested) : '0', label: 'הושקע בסך הכל' },
+    { value: `${stats?.max_return ?? 0}%`, label: 'תשואה מקסימלית' },
+  ];
+
+  return (
+    <div className="py-10" style={{ background: '#111827' }} dir="rtl">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        {items.map(item => (
+          <div key={item.label} className="group">
+            <div
+              className="text-3xl md:text-4xl font-black mb-1.5 transition-transform duration-300 group-hover:scale-110"
+              style={{ color: '#F5A623' }}
+            >
+              {item.value}
+            </div>
+            <div className="text-sm text-slate-400 font-medium">{item.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

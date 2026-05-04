@@ -39,14 +39,17 @@ export default function TendersPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      <div className="flex items-end justify-between mb-8">
+      <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
         <div>
-          <h1 className="section-title">מכרזים פעילים</h1>
-          <p className="text-slate-500 mt-1">
-            {data?.pagination?.total ?? 0} מכרזים פעילים ממתינים להצעות
+          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">
+            📋 מכרזים פעילים
+          </div>
+          <h1 className="section-title">מכרזים ממתינים להצעות</h1>
+          <p className="text-slate-500 mt-1 text-lg">
+            {data?.pagination?.total ?? 0} מכרזים פעילים כרגע
           </p>
         </div>
-        <Link href="/post-tender" className="btn-gold text-sm px-5 py-2.5 rounded-xl">
+        <Link href="/post-tender" className="btn-gold text-sm px-6 py-3 rounded-xl flex-shrink-0">
           + פרסם מכרז
         </Link>
       </div>

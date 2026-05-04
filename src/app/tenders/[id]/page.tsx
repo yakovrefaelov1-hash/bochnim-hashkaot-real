@@ -292,13 +292,24 @@ function QuoteCard({ quote, tenderId }: { quote: Quote; tenderId: string }) {
       )}
 
       {quote.status !== 'pending' && (
-        <div className={`mt-3 text-xs font-semibold px-3 py-1 rounded-full inline-block ${
-          quote.status === 'accepted' ? 'bg-green-100 text-green-700' :
-          quote.status === 'rejected' ? 'bg-red-100 text-red-700' :
-          'bg-slate-100 text-slate-600'
-        }`}>
-          {quote.status === 'accepted' ? '✓ הצעה אושרה' :
-           quote.status === 'rejected' ? '✕ הצעה נדחתה' : 'בוטל'}
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
+          <div className={`text-xs font-semibold px-3 py-1 rounded-full ${
+            quote.status === 'accepted' ? 'bg-green-100 text-green-700' :
+            quote.status === 'rejected' ? 'bg-red-100 text-red-700' :
+            'bg-slate-100 text-slate-600'
+          }`}>
+            {quote.status === 'accepted' ? '✓ הצעה אושרה' :
+             quote.status === 'rejected' ? '✕ הצעה נדחתה' : 'בוטל'}
+          </div>
+          {quote.status === 'accepted' && provider?.user_id && (
+            <Link
+              href={`/messages/${tenderId}?with=${provider.user_id}`}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-white px-3 py-1 rounded-full transition-all"
+              style={{ background: 'linear-gradient(135deg, #1B4F72, #2E86AB)' }}
+            >
+              💬 שלח הודעה לספק
+            </Link>
+          )}
         </div>
       )}
     </div>

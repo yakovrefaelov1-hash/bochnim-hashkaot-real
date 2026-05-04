@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { apiGet } from '@/lib/api';
 import { ProviderProfile, ProviderCategory } from '@/types';
 import { CATEGORY_LABELS, CATEGORY_ICONS, ISRAELI_CITIES } from '@/lib/constants';
-import { LoadingCenter, EmptyState, StarRating, Badge } from '@/components/ui/index';
+import { LoadingCenter, EmptyState, StarRating } from '@/components/ui/index';
 import { useSearchParams } from 'next/navigation';
 
 interface ProvidersResponse {
@@ -16,7 +16,7 @@ interface ProvidersResponse {
 
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as ProviderCategory[];
 
-export default function ProvidersPage() {
+function ProvidersContent() {
   const params = useSearchParams();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -40,16 +40,17 @@ export default function ProvidersPage() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="section-title mb-2">ספקים מאומתים</h1>
-        <p className="text-slate-500">
+    <div className="max-w-6xl mx-auto px-4 py-12">
+      <div className="mb-10">
+        <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">
+          👥 ספקים מאומתים
+        </div>
+        <h1 className="section-title mb-2">מצא את הספק המתאים לך</h1>
+        <p className="text-slate-500 text-lg">
           {data?.pagination?.total ?? 0} ספקים מקצועיים · יזמים, יועצים, עורכי דין ועוד
         </p>
       </div>
 
-      {/* Category pills */}
       <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => { setCategory(''); setPage(1); }}
@@ -73,7 +74,6 @@ export default function ProvidersPage() {
         ))}
       </div>
 
-      {/* Filters row */}
       <div className="flex flex-wrap gap-3 mb-8">
         <div className="relative flex-1 min-w-[200px]">
           <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +118,6 @@ export default function ProvidersPage() {
         )}
       </div>
 
-      {/* Results */}
       {isLoading ? (
         <LoadingCenter />
       ) : !data?.data?.length ? (
@@ -157,9 +156,14 @@ export default function ProvidersPage() {
   );
 }
 
-// ============================================================
-// Provider Card
-// ============================================================
+export default function ProvidersPage() {
+  return (
+    <Suspense fallback={<LoadingCenter />}>
+      <ProvidersContent />
+    </Suspense>
+  );
+}
+
 function ProviderCard({ provider, animationDelay }: { provider: ProviderProfile; animationDelay: number }) {
   return (
     <Link
@@ -167,9 +171,7 @@ function ProviderCard({ provider, animationDelay }: { provider: ProviderProfile;
       className="card-hover p-5 flex flex-col animate-slide-up"
       style={{ animationDelay: `${animationDelay}s` }}
     >
-      {/* Header */}
       <div className="flex items-start gap-3 mb-3">
-        {/* Avatar */}
         <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-primary-700 font-black text-lg flex-shrink-0">
           {provider.is_featured ? '⭐' : provider.business_name[0]}
         </div>
@@ -188,12 +190,10 @@ function ProviderCard({ provider, animationDelay }: { provider: ProviderProfile;
         </div>
       </div>
 
-      {/* Bio */}
       {provider.bio && (
         <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-3">{provider.bio}</p>
       )}
 
-      {/* Stats */}
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="bg-slate-50 rounded-lg p-2 text-center">
           <div className="text-sm font-bold text-primary-700">{provider.years_experience}</div>
@@ -211,7 +211,6 @@ function ProviderCard({ provider, animationDelay }: { provider: ProviderProfile;
         </div>
       </div>
 
-      {/* Rating */}
       {provider.total_reviews > 0 && (
         <div className="flex items-center gap-2 mb-3">
           <StarRating rating={provider.avg_rating} size="sm" />
@@ -219,7 +218,6 @@ function ProviderCard({ provider, animationDelay }: { provider: ProviderProfile;
         </div>
       )}
 
-      {/* Regions */}
       {provider.regions_served?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-slate-100">
           {provider.regions_served.slice(0, 3).map(r => (

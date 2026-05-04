@@ -141,6 +141,15 @@ export default function ProviderDashboard() {
                           <Link href={`/tenders/${q.tender_id}`} className="text-xs text-slate-400 hover:text-primary-600">
                             צפה →
                           </Link>
+                          {q.status === 'accepted' && (
+                            <Link
+                              href={`/messages/${q.tender_id}`}
+                              className="text-xs font-semibold text-white px-2 py-0.5 rounded-full"
+                              style={{ background: 'linear-gradient(135deg, #1B4F72, #2E86AB)' }}
+                            >
+                              💬 הודעה
+                            </Link>
+                          )}
                         </div>
                       </div>
                     </div>

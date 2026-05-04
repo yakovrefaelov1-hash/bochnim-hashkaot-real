@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import { apiPost } from '@/lib/api';
 import { PRICE_PLANS } from '@/lib/constants';
 import Link from 'next/link';
 
-export default function SubscribePage() {
+function SubscribeContent() {
   const params = useSearchParams();
   const router = useRouter();
   const { user } = useAuthStore();
@@ -16,6 +16,7 @@ export default function SubscribePage() {
 
   const tenderId = params.get('tender');
   const defaultType = params.get('type') as 'single' | 'monthly' | null;
+  void defaultType;
 
   const handleSubscribe = async (type: 'single' | 'monthly') => {
     if (!user) {
@@ -43,7 +44,7 @@ export default function SubscribePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-16 px-4">
+    <div className="min-h-screen bg-white py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-primary-800 mb-3">בחר תוכנית</h1>
@@ -120,7 +121,6 @@ export default function SubscribePage() {
           ))}
         </div>
 
-        {/* Trust signals */}
         <div className="text-center mt-12 space-y-3">
           <div className="flex items-center justify-center gap-6 text-sm text-slate-500">
             <span>🔒 תשלום מאובטח</span>
@@ -132,7 +132,6 @@ export default function SubscribePage() {
           </p>
         </div>
 
-        {/* FAQ */}
         <div className="mt-12 max-w-2xl mx-auto">
           <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">שאלות נפוצות</h3>
           <div className="space-y-3">
@@ -151,5 +150,13 @@ export default function SubscribePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SubscribePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
+      <SubscribeContent />
+    </Suspense>
   );
 }

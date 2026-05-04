@@ -8,12 +8,12 @@
   --secondary: #F5A623;
   --success: #16A34A;
   --danger: #DC2626;
-  --bg: #F0F4F8;
+  --bg: #FFFFFF;
   --card: #FFFFFF;
-  --text: #1E293B;
+  --text: #0F172A;
   --text-muted: #64748B;
   --border: #E2E8F0;
-  --radius: 12px;
+  --radius: 16px;
   --shadow: 0 4px 24px rgba(27,79,114,0.08);
   --shadow-lg: 0 8px 40px rgba(27,79,114,0.14);
 }
@@ -26,24 +26,30 @@ body {
   direction: rtl;
   text-align: right;
   color: var(--text);
+  background: #FFFFFF;
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3 rounded-xl font-semibold text-base
-           hover:bg-primary-700 active:scale-[0.98] transition-all duration-200
-           disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply text-white px-7 py-3 rounded-xl font-semibold text-base
+           active:scale-[0.98] transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center;
+    background: linear-gradient(135deg, #1B4F72, #2E86AB);
+    box-shadow: 0 4px 14px rgba(27, 79, 114, 0.25);
   }
 
   .btn-gold {
-    @apply bg-gradient-to-l from-gold-500 to-gold-400 text-white px-6 py-3 rounded-xl
-           font-bold text-base shadow-md hover:shadow-lg active:scale-[0.98]
-           transition-all duration-200;
+    @apply text-white px-7 py-3 rounded-xl font-bold text-base
+           active:scale-[0.98] transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center;
+    background: linear-gradient(135deg, #F5A623, #E8920F);
+    box-shadow: 0 4px 14px rgba(245, 166, 35, 0.3);
   }
 
   .btn-outline {
-    @apply border-2 border-primary text-primary px-6 py-3 rounded-xl font-semibold
-           hover:bg-primary hover:text-white transition-all duration-200;
+    @apply border-2 border-primary text-primary px-7 py-3 rounded-xl font-semibold
+           hover:bg-primary hover:text-white transition-all duration-200
+           inline-flex items-center justify-center;
   }
 
   .btn-ghost {
@@ -52,11 +58,12 @@ body {
   }
 
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden;
+    @apply bg-white rounded-2xl border border-slate-100 overflow-hidden;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
   }
 
   .card-hover {
-    @apply card hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 cursor-pointer;
+    @apply card transition-all duration-300 cursor-pointer;
   }
 
   .input-field {
@@ -70,7 +77,8 @@ body {
   }
 
   .section-title {
-    @apply text-2xl md:text-3xl font-bold text-primary-800;
+    @apply text-2xl md:text-3xl font-bold;
+    color: #0F172A;
   }
 
   .badge {
@@ -96,13 +104,13 @@ body {
     border: 1px solid rgba(255,255,255,0.15);
   }
 
-  /* Step indicator */
   .step-indicator {
-    @apply flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold;
+    @apply flex items-center justify-center w-9 h-9 rounded-full text-sm font-bold;
   }
 
   .step-active {
-    @apply bg-primary text-white;
+    @apply text-white shadow-md;
+    background: linear-gradient(135deg, #1B4F72, #2E86AB);
   }
 
   .step-done {
@@ -110,22 +118,36 @@ body {
   }
 
   .step-inactive {
-    @apply bg-slate-200 text-slate-500;
+    @apply bg-slate-100 text-slate-400 border border-slate-200;
   }
 
-  /* Investment type card */
   .invest-card {
     @apply relative flex flex-col items-center justify-center p-5 rounded-2xl border-2
            cursor-pointer transition-all duration-200 text-center select-none;
   }
 
   .invest-card-inactive {
-    @apply invest-card border-slate-200 bg-white hover:border-primary/40 hover:bg-primary-50/50;
+    @apply invest-card border-slate-200 bg-white hover:border-primary/40 hover:bg-primary-50/50 hover:shadow-sm;
   }
 
   .invest-card-active {
     @apply invest-card border-primary bg-primary-50 shadow-md;
   }
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 22px rgba(27, 79, 114, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-gold:hover:not(:disabled) {
+  box-shadow: 0 6px 22px rgba(245, 166, 35, 0.45);
+  transform: translateY(-1px);
+}
+
+.card-hover:hover {
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.12);
+  transform: translateY(-2px);
 }
 
 /* Scrollbar */

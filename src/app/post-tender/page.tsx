@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { Building, Key, Map, Zap, Globe, Check } from 'lucide-react';
 import { apiPost } from '@/lib/api';
 import {
   InvestmentType,
@@ -10,11 +11,18 @@ import {
 } from '@/types';
 import {
   INVESTMENT_TYPE_LABELS,
-  INVESTMENT_TYPE_ICONS,
   INVESTMENT_TYPE_DESCRIPTIONS,
   ISRAELI_CITIES,
   WORLD_COUNTRIES,
 } from '@/lib/constants';
+
+const INVESTMENT_TYPE_LUCIDE_ICONS: Record<InvestmentType, React.ElementType> = {
+  real_estate_local: Building,
+  real_estate_secondhand: Key,
+  land: Map,
+  real_estate_presale: Zap,
+  real_estate_abroad: Globe,
+};
 
 const STEPS = ['תחום השקעה', 'מיקום והון', 'פירוט ההשקעה', 'פרטי קשר'];
 
@@ -80,7 +88,7 @@ export default function PostTenderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4">
+    <div className="min-h-screen bg-white py-10 px-4">
       <div className="max-w-2xl mx-auto">
         {/* Step indicator */}
         <div className="mb-8">
@@ -119,6 +127,7 @@ export default function PostTenderPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {(Object.keys(INVESTMENT_TYPE_LABELS) as InvestmentType[]).map(type => {
                     const active = selectedTypes.includes(type);
+                    const Icon = INVESTMENT_TYPE_LUCIDE_ICONS[type];
                     return (
                       <button
                         key={type}
@@ -127,7 +136,20 @@ export default function PostTenderPage() {
                         className={active ? 'invest-card-active' : 'invest-card-inactive'}
                       >
                         <div className="flex items-center gap-3 w-full text-right">
-                          <span className="text-3xl">{INVESTMENT_TYPE_ICONS[type]}</span>
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                            style={{
+                              background: active
+                                ? 'linear-gradient(135deg, #1B4F72, #2E86AB)'
+                                : 'linear-gradient(135deg, #EFF6FF, #DBEAFE)',
+                            }}
+                          >
+                            <Icon
+                              className="w-5 h-5"
+                              style={{ color: active ? 'white' : '#1B4F72' }}
+                              strokeWidth={1.5}
+                            />
+                          </div>
                           <div className="flex-1">
                             <div className={`font-semibold text-sm ${active ? 'text-primary-700' : 'text-slate-700'}`}>
                               {INVESTMENT_TYPE_LABELS[type]}
@@ -138,9 +160,7 @@ export default function PostTenderPage() {
                           </div>
                           {active && (
                             <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                              </svg>
+                              <Check className="w-3 h-3 text-white" strokeWidth={3} />
                             </div>
                           )}
                         </div>
@@ -327,7 +347,7 @@ function SuccessScreen({ trackingUrl }: { trackingUrl: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-12">
       <div className="max-w-lg w-full text-center animate-scale-in">
         <div className="card p-8 md:p-12">
           <div className="text-6xl mb-4 animate-bounce">🎉</div>

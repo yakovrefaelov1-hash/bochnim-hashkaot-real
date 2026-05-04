@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { apiPost } from '@/lib/api';
 import { useAuthStore, AuthUser } from '@/store/authStore';
-import { AuthLayout } from '../login/page';
+import { AuthLayout } from '../_components/AuthLayout';
 
 interface RegisterForm {
   full_name: string;
@@ -22,7 +22,7 @@ interface RegisterResponse {
   tokens: { access: string; refresh: string };
 }
 
-export default function RegisterPage() {
+function RegisterContent() {
   const params = useSearchParams();
   const defaultRole = (params.get('role') as 'investor' | 'provider') ?? 'investor';
   const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterForm>({
@@ -56,7 +56,6 @@ export default function RegisterPage() {
   return (
     <AuthLayout title="הצטרף לבוחנים השקעות">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* Role selector */}
         <div>
           <label className="label">אני...</label>
           <div className="grid grid-cols-2 gap-3">
@@ -153,5 +152,13 @@ export default function RegisterPage() {
         </p>
       </form>
     </AuthLayout>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-slate-50 flex items-center justify-center"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>}>
+      <RegisterContent />
+    </Suspense>
   );
 }

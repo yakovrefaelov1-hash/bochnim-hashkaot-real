@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { apiPost } from '@/lib/api';
 import { useAuthStore, AuthUser } from '@/store/authStore';
+import { AuthLayout } from '../_components/AuthLayout';
 
 interface LoginForm { email: string; password: string; }
 interface LoginResponse { user: AuthUser; tokens: { access: string; refresh: string }; }
@@ -81,24 +82,3 @@ export default function LoginPage() {
   );
 }
 
-// ============================================================
-// Re-export for login page
-// ============================================================
-export { AuthLayout };
-
-function AuthLayout({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-primary-800 font-bold text-xl">
-            <span className="text-3xl">🏗️</span>
-            בוחנים השקעות
-          </Link>
-          <h1 className="text-xl font-bold text-slate-800 mt-4">{title}</h1>
-        </div>
-        <div className="card p-6 md:p-8">{children}</div>
-      </div>
-    </div>
-  );
-}

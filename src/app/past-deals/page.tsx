@@ -45,12 +45,12 @@ export default function PastDealsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       {/* Header */}
-      <div className="text-center mb-10">
-        <div className="badge bg-amber-100 text-amber-700 mb-3 mx-auto">
+      <div className="text-center mb-12">
+        <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-700 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">
           🔥 עסקאות מוכחות
         </div>
         <h1 className="section-title mb-3">עסקאות שהמשקיעים שלנו סגרו</h1>
-        <p className="text-slate-500 max-w-xl mx-auto">
+        <p className="text-slate-500 max-w-xl mx-auto text-lg leading-relaxed">
           כל עסקה שמוצגת כאן בוצעה בפועל על ידי ספקים בפלטפורמה. תשואות מאומתות.
         </p>
       </div>
