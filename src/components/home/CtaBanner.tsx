@@ -1,43 +1,35 @@
+import Link from 'next/link';
+import { ArrowLeft, CheckCircle } from 'lucide-react';
+
 export function CtaBanner() {
   return (
-    <section
-      className="py-24 text-white"
-      style={{ background: 'linear-gradient(135deg, #0A1F30 0%, #1B4F72 55%, #2E86AB 100%)' }}
-      dir="rtl"
-    >
-      <div className="max-w-3xl mx-auto px-6 text-center">
-        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
-          🚀 מוכן לצעד הבא?
-        </div>
-
-        <h2 className="text-3xl md:text-4xl font-bold mb-5">
+    <section style={{ background: 'var(--gray-50)', borderTop: '0.5px solid var(--gray-100)', padding: '64px 0' }} dir="rtl">
+      <div style={{ maxWidth: 640, margin: '0 auto', padding: '0 48px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: 22, fontWeight: 500, color: 'var(--gray-900)', marginBottom: 12 }}>
           מוכן למצוא את ההשקעה הבאה שלך?
         </h2>
 
-        <p className="text-blue-200 text-lg mb-10 leading-relaxed max-w-xl mx-auto">
+        <p style={{ fontSize: 15, color: 'var(--gray-500)', marginBottom: 32, lineHeight: 1.6 }}>
           פרסם מכרז חינם וקבל הצעות מספקים מוסמכים תוך 48 שעות
         </p>
 
-        <div className="flex flex-wrap gap-4 justify-center">
-          <a
-            href="/post-tender"
-            className="inline-flex items-center gap-2 text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-200 hover:-translate-y-0.5"
-            style={{ background: 'linear-gradient(135deg, #F5A623, #E8920F)', boxShadow: '0 8px 24px rgba(245,166,35,0.35)' }}
-          >
-            📋 פרסם מכרז עכשיו
-          </a>
-          <a
-            href="/providers"
-            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-all duration-200"
-          >
-            👥 עיין בספקים
-          </a>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 32 }}>
+          <Link href="/post-tender" className="btn-primary">
+            פרסם מכרז עכשיו
+          </Link>
+          <Link href="/providers" className="btn-secondary">
+            עיין בספקים
+            <ArrowLeft size={14} strokeWidth={1.5} />
+          </Link>
         </div>
 
-        <div className="flex flex-wrap gap-6 justify-center mt-10 text-sm text-blue-200">
-          <span>✅ ללא עמלת הצלחה</span>
-          <span>✅ פרסום חינמי לחלוטין</span>
-          <span>✅ ספקים מאומתים</span>
+        <div style={{ display: 'flex', gap: 24, justifyContent: 'center', flexWrap: 'wrap', fontSize: 13, color: 'var(--gray-500)' }}>
+          {['ללא עמלת הצלחה', 'פרסום חינמי לחלוטין', 'ספקים מאומתים'].map(item => (
+            <span key={item} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <CheckCircle size={13} strokeWidth={1.5} color="var(--green-600)" />
+              {item}
+            </span>
+          ))}
         </div>
       </div>
     </section>

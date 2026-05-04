@@ -1,6 +1,6 @@
 'use client';
-
-import { Building2, TrendingUp, Scale, ClipboardList, HardHat, Handshake } from 'lucide-react';
+import { Building2, TrendingUp, Scale, ClipboardList, HardHat, Handshake, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 const cats = [
   { name: 'נדל"ן', icon: Building2, href: '/providers?category=real_estate_developer' },
@@ -13,42 +13,41 @@ const cats = [
 
 export function ProviderCategories() {
   return (
-    <section className="py-20 bg-white" dir="rtl">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0F172A] mb-3">
+    <section style={{ background: 'var(--white)', padding: '64px 0', borderBottom: '0.5px solid var(--gray-100)' }} dir="rtl">
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 48px' }}>
+        <div style={{ marginBottom: 40 }}>
+          <h2 style={{ fontSize: 22, fontWeight: 500, color: 'var(--gray-900)', marginBottom: 8 }}>
             קטגוריות ספקים
           </h2>
-          <p className="text-slate-500 text-lg">מצא את המומחה המתאים לסוג ההשקעה שלך</p>
+          <p style={{ fontSize: 15, color: 'var(--gray-500)' }}>מצא את המומחה המתאים לסוג ההשקעה שלך</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 12, marginBottom: 32 }}>
           {cats.map(({ name, icon: Icon, href }) => (
-            <a
-              key={name}
-              href={href}
-              className="group flex flex-col items-center text-center p-6 rounded-2xl border border-slate-100 hover:border-primary/30 bg-white hover:bg-primary-50/50 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"
-            >
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
-                style={{ background: 'linear-gradient(135deg, #EFF6FF, #DBEAFE)' }}
-              >
-                <Icon className="w-5 h-5" style={{ color: '#1B4F72' }} strokeWidth={1.5} />
+            <Link key={name} href={href} style={{ textDecoration: 'none' }}>
+              <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 10, padding: 20, cursor: 'pointer' }}>
+                <div style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 'var(--radius-md)',
+                  background: 'var(--gray-50)',
+                  border: '0.5px solid var(--gray-100)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <Icon size={16} strokeWidth={1.5} color="var(--gray-900)" />
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--gray-800)' }}>{name}</div>
               </div>
-              <div className="font-semibold text-[#0F172A] text-sm">{name}</div>
-            </a>
+            </Link>
           ))}
         </div>
 
-        <div className="text-center mt-10">
-          <a
-            href="/providers"
-            className="inline-flex items-center gap-2 text-primary-600 font-semibold hover:gap-3 transition-all duration-200 text-sm"
-          >
-            עיין בכל הספקים
-            <span>←</span>
-          </a>
-        </div>
+        <Link href="/providers" className="btn-ghost" style={{ padding: 0, fontSize: 13 }}>
+          עיין בכל הספקים
+          <ArrowLeft size={14} strokeWidth={1.5} />
+        </Link>
       </div>
     </section>
   );
