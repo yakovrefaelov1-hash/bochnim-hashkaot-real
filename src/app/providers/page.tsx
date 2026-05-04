@@ -5,9 +5,13 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { apiGet } from '@/lib/api';
 import { ProviderProfile, ProviderCategory } from '@/types';
-import { CATEGORY_LABELS, CATEGORY_ICONS, ISRAELI_CITIES } from '@/lib/constants';
+import { CATEGORY_LABELS, ISRAELI_CITIES } from '@/lib/constants';
 import { LoadingCenter, EmptyState, StarRating } from '@/components/ui/index';
 import { useSearchParams } from 'next/navigation';
+import {
+  Users, Building2, TrendingUp, Handshake, Scale, Ruler, HardHat,
+  Lightbulb, Search, MapPin, X,
+} from 'lucide-react';
 
 interface ProvidersResponse {
   data: ProviderProfile[];
@@ -15,6 +19,16 @@ interface ProvidersResponse {
 }
 
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as ProviderCategory[];
+
+const CATEGORY_LUCIDE_ICONS: Record<ProviderCategory, React.ElementType> = {
+  entrepreneur: Lightbulb,
+  real_estate_developer: Building2,
+  investment_advisor: TrendingUp,
+  investor_companion: Handshake,
+  lawyer: Scale,
+  appraiser: Ruler,
+  contractor: HardHat,
+};
 
 function ProvidersContent() {
   const params = useSearchParams();
@@ -40,80 +54,91 @@ function ProvidersContent() {
   });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <div className="mb-10">
-        <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">
-          👥 ספקים מאומתים
+    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 24px' }} dir="rtl">
+      <div style={{ marginBottom: 32 }}>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'var(--gray-50)', border: '0.5px solid var(--gray-100)',
+          borderRadius: 'var(--radius-pill)', padding: '3px 10px',
+          fontSize: 12, fontWeight: 500, color: 'var(--gray-500)', marginBottom: 12,
+        }}>
+          <Users size={12} strokeWidth={1.5} />
+          ספקים מאומתים
         </div>
-        <h1 className="section-title mb-2">מצא את הספק המתאים לך</h1>
-        <p className="text-slate-500 text-lg">
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: 'var(--gray-900)', marginBottom: 6 }}>מצא את הספק המתאים לך</h1>
+        <p style={{ fontSize: 15, color: 'var(--gray-500)' }}>
           {data?.pagination?.total ?? 0} ספקים מקצועיים · יזמים, יועצים, עורכי דין ועוד
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      {/* Category filter tabs */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
         <button
           onClick={() => { setCategory(''); setPage(1); }}
-          className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-            category === '' ? 'bg-primary text-white' : 'bg-white border border-slate-200 text-slate-600 hover:border-primary/40'
-          }`}
+          style={{
+            padding: '6px 14px', borderRadius: 'var(--radius-pill)',
+            fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s ease',
+            background: category === '' ? 'var(--gray-900)' : 'var(--white)',
+            color: category === '' ? 'var(--white)' : 'var(--gray-500)',
+            border: category === '' ? 'none' : '0.5px solid var(--gray-100)',
+          }}
         >
           הכל
         </button>
-        {CATEGORIES.map(cat => (
-          <button
-            key={cat}
-            onClick={() => { setCategory(cat); setPage(1); }}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
-              category === cat ? 'bg-primary text-white' : 'bg-white border border-slate-200 text-slate-600 hover:border-primary/40'
-            }`}
-          >
-            <span>{CATEGORY_ICONS[cat]}</span>
-            {CATEGORY_LABELS[cat]}
-          </button>
-        ))}
+        {CATEGORIES.map(cat => {
+          const Icon = CATEGORY_LUCIDE_ICONS[cat];
+          const active = category === cat;
+          return (
+            <button
+              key={cat}
+              onClick={() => { setCategory(cat); setPage(1); }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '6px 14px', borderRadius: 'var(--radius-pill)',
+                fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s ease',
+                background: active ? 'var(--gray-900)' : 'var(--white)',
+                color: active ? 'var(--white)' : 'var(--gray-500)',
+                border: active ? 'none' : '0.5px solid var(--gray-100)',
+              }}
+            >
+              <Icon size={12} strokeWidth={1.5} />
+              {CATEGORY_LABELS[cat]}
+            </button>
+          );
+        })}
       </div>
 
-      <div className="flex flex-wrap gap-3 mb-8">
-        <div className="relative flex-1 min-w-[200px]">
-          <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+      {/* Search + filters */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
+        <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
+          <Search size={14} strokeWidth={1.5} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--gray-500)' }} />
           <input
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
-            className="input-field pr-10 text-sm py-2"
+            className="input-field"
+            style={{ paddingRight: 36, fontSize: 13, padding: '8px 36px 8px 12px' }}
             placeholder="חפש לפי שם עסק, מיקום..."
           />
         </div>
 
-        <select
-          value={region}
-          onChange={e => { setRegion(e.target.value); setPage(1); }}
-          className="input-field w-auto text-sm py-2"
-        >
+        <select value={region} onChange={e => { setRegion(e.target.value); setPage(1); }} className="input-field" style={{ width: 'auto', fontSize: 13, padding: '8px 12px' }}>
           <option value="">כל האזורים</option>
-          {ISRAELI_CITIES.slice(0, 15).map(c => (
-            <option key={c} value={c}>{c}</option>
-          ))}
+          {ISRAELI_CITIES.slice(0, 15).map(c => <option key={c} value={c}>{c}</option>)}
         </select>
 
-        <select
-          value={minRating}
-          onChange={e => { setMinRating(e.target.value); setPage(1); }}
-          className="input-field w-auto text-sm py-2"
-        >
+        <select value={minRating} onChange={e => { setMinRating(e.target.value); setPage(1); }} className="input-field" style={{ width: 'auto', fontSize: 13, padding: '8px 12px' }}>
           <option value="">כל הדירוגים</option>
-          <option value="4">4+ ⭐</option>
-          <option value="4.5">4.5+ ⭐</option>
+          <option value="4">4+</option>
+          <option value="4.5">4.5+</option>
         </select>
 
         {(search || region || minRating) && (
           <button
             onClick={() => { setSearch(''); setRegion(''); setMinRating(''); setPage(1); }}
-            className="text-sm text-slate-500 hover:text-slate-700 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 13, color: 'var(--gray-500)', background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            ✕ נקה
+            <X size={13} strokeWidth={1.5} />
+            נקה
           </button>
         )}
       </div>
@@ -122,31 +147,31 @@ function ProvidersContent() {
         <LoadingCenter />
       ) : !data?.data?.length ? (
         <EmptyState
-          icon="🔍"
+          icon="search"
           title="לא נמצאו ספקים"
           desc="נסה לשנות את הפילטרים"
           action={
-            <button onClick={() => { setSearch(''); setCategory(''); setRegion(''); setMinRating(''); }} className="btn-outline text-sm inline-block">
+            <button onClick={() => { setSearch(''); setCategory(''); setRegion(''); setMinRating(''); }} className="btn-secondary" style={{ fontSize: 13 }}>
               נקה פילטרים
             </button>
           }
         />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {data.data.map((provider, i) => (
-              <ProviderCard key={provider.id} provider={provider} animationDelay={i * 0.05} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+            {data.data.map(provider => (
+              <ProviderCard key={provider.id} provider={provider} />
             ))}
           </div>
 
           {(data.pagination?.pages ?? 1) > 1 && (
-            <div className="flex justify-center gap-2 mt-10">
-              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="btn-outline text-sm px-4 py-2 rounded-lg disabled:opacity-40">
-                ← הקודם
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 32 }}>
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} className="btn-secondary" style={{ fontSize: 13, padding: '7px 14px' }}>
+                הקודם
               </button>
-              <span className="px-4 py-2 text-sm text-slate-600">עמוד {page} מתוך {data.pagination.pages}</span>
-              <button onClick={() => setPage(p => Math.min(data.pagination.pages, p + 1))} disabled={page === data.pagination.pages} className="btn-outline text-sm px-4 py-2 rounded-lg disabled:opacity-40">
-                הבא →
+              <span style={{ padding: '8px 16px', fontSize: 13, color: 'var(--gray-500)' }}>עמוד {page} מתוך {data.pagination.pages}</span>
+              <button onClick={() => setPage(p => Math.min(data.pagination.pages, p + 1))} disabled={page === data.pagination.pages} className="btn-secondary" style={{ fontSize: 13, padding: '7px 14px' }}>
+                הבא
               </button>
             </div>
           )}
@@ -164,72 +189,77 @@ export default function ProvidersPage() {
   );
 }
 
-function ProviderCard({ provider, animationDelay }: { provider: ProviderProfile; animationDelay: number }) {
+function ProviderCard({ provider }: { provider: ProviderProfile }) {
+  const Icon = CATEGORY_LUCIDE_ICONS[provider.category] ?? Building2;
+
   return (
-    <Link
-      href={`/providers/${provider.id}`}
-      className="card-hover p-5 flex flex-col animate-slide-up"
-      style={{ animationDelay: `${animationDelay}s` }}
-    >
-      <div className="flex items-start gap-3 mb-3">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center text-primary-700 font-black text-lg flex-shrink-0">
-          {provider.is_featured ? '⭐' : provider.business_name[0]}
+    <Link href={`/providers/${provider.id}`} style={{ textDecoration: 'none' }}>
+      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+          <div style={{
+            width: 40, height: 40, borderRadius: 'var(--radius-md)',
+            background: 'var(--gray-50)', border: '0.5px solid var(--gray-100)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <span style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-900)' }}>
+              {provider.business_name[0]}
+            </span>
+          </div>
+
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 2 }}>
+              <span style={{ fontWeight: 500, color: 'var(--gray-900)', fontSize: 14 }}>{provider.business_name}</span>
+              {provider.is_featured && (
+                <span className="badge badge-premium" style={{ fontSize: 11 }}>מומלץ</span>
+              )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Icon size={12} strokeWidth={1.5} color="var(--gray-500)" />
+              <span style={{ fontSize: 12, color: 'var(--gray-500)' }}>{CATEGORY_LABELS[provider.category]}</span>
+            </div>
+          </div>
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <h3 className="font-bold text-slate-800 text-sm truncate">{provider.business_name}</h3>
-            {provider.is_featured && (
-              <span className="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">מומלץ</span>
+        {provider.bio && (
+          <p style={{ fontSize: 13, color: 'var(--gray-500)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            {provider.bio}
+          </p>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+          {[
+            { value: provider.years_experience, label: 'שנות ניסיון' },
+            { value: (provider as any).deals_count ?? '—', label: 'עסקאות' },
+            { value: provider.total_reviews > 0 ? provider.avg_rating.toFixed(1) : '—', label: 'דירוג' },
+          ].map(m => (
+            <div key={m.label} className="card-metric" style={{ textAlign: 'center', padding: 10 }}>
+              <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--gray-900)' }}>{m.value}</div>
+              <div style={{ fontSize: 11, color: 'var(--gray-500)' }}>{m.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {provider.total_reviews > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <StarRating rating={provider.avg_rating} size="sm" />
+            <span style={{ fontSize: 12, color: 'var(--gray-500)' }}>({provider.total_reviews})</span>
+          </div>
+        )}
+
+        {(provider as any).regions_served?.length > 0 && (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, paddingTop: 8, borderTop: '0.5px solid var(--gray-100)' }}>
+            {(provider as any).regions_served.slice(0, 3).map((r: string) => (
+              <span key={r} style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 11, background: 'var(--gray-50)', color: 'var(--gray-500)', padding: '2px 8px', borderRadius: 'var(--radius-pill)' }}>
+                <MapPin size={10} strokeWidth={1.5} />
+                {r}
+              </span>
+            ))}
+            {(provider as any).regions_served.length > 3 && (
+              <span style={{ fontSize: 11, color: 'var(--gray-500)' }}>+{(provider as any).regions_served.length - 3}</span>
             )}
           </div>
-          <div className="flex items-center gap-1.5 mt-0.5">
-            <span className="text-lg">{CATEGORY_ICONS[provider.category]}</span>
-            <span className="text-xs text-slate-500">{CATEGORY_LABELS[provider.category]}</span>
-          </div>
-        </div>
+        )}
       </div>
-
-      {provider.bio && (
-        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-3">{provider.bio}</p>
-      )}
-
-      <div className="grid grid-cols-3 gap-2 mb-3">
-        <div className="bg-slate-50 rounded-lg p-2 text-center">
-          <div className="text-sm font-bold text-primary-700">{provider.years_experience}</div>
-          <div className="text-xs text-slate-400">שנות ניסיון</div>
-        </div>
-        <div className="bg-slate-50 rounded-lg p-2 text-center">
-          <div className="text-sm font-bold text-primary-700">{provider.deals_count}</div>
-          <div className="text-xs text-slate-400">עסקאות</div>
-        </div>
-        <div className="bg-slate-50 rounded-lg p-2 text-center">
-          <div className="text-sm font-bold text-primary-700">
-            {provider.total_reviews > 0 ? provider.avg_rating.toFixed(1) : '—'}
-          </div>
-          <div className="text-xs text-slate-400">דירוג</div>
-        </div>
-      </div>
-
-      {provider.total_reviews > 0 && (
-        <div className="flex items-center gap-2 mb-3">
-          <StarRating rating={provider.avg_rating} size="sm" />
-          <span className="text-xs text-slate-400">({provider.total_reviews} חוות דעת)</span>
-        </div>
-      )}
-
-      {provider.regions_served?.length > 0 && (
-        <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-slate-100">
-          {provider.regions_served.slice(0, 3).map(r => (
-            <span key={r} className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
-              📍 {r}
-            </span>
-          ))}
-          {provider.regions_served.length > 3 && (
-            <span className="text-xs text-slate-400">+{provider.regions_served.length - 3}</span>
-          )}
-        </div>
-      )}
     </Link>
   );
 }

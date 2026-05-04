@@ -1,31 +1,31 @@
 'use client';
 
 import Link from 'next/link';
+import { TrendingUp } from 'lucide-react';
 
 export function AuthLayout({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4 py-14"
-      style={{ background: 'linear-gradient(160deg, #EFF6FF 0%, #FFFFFF 50%, #F0F9FF 100%)' }}
-    >
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2.5 font-bold text-xl hover:opacity-80 transition-opacity"
-            style={{ color: '#1B4F72' }}
-          >
-            <span className="text-3xl">🏦</span>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '56px 24px',
+      background: 'var(--white)',
+    }}>
+      <div style={{ width: '100%', maxWidth: 420 }}>
+        <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <Link href="/" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+            fontWeight: 500, fontSize: 15, color: 'var(--gray-900)', textDecoration: 'none',
+          }}>
+            <TrendingUp size={18} strokeWidth={1.5} />
             בוחנים השקעות
           </Link>
-          <div className="mt-5 w-12 h-1 rounded-full mx-auto" style={{ background: 'linear-gradient(135deg, #1B4F72, #2E86AB)' }} />
-          <h1 className="text-xl font-bold mt-4" style={{ color: '#0F172A' }}>{title}</h1>
+          <h1 style={{ fontSize: 18, fontWeight: 500, color: 'var(--gray-900)', marginTop: 20 }}>{title}</h1>
         </div>
 
-        <div
-          className="bg-white rounded-2xl p-7 md:p-9"
-          style={{ boxShadow: '0 8px 40px rgba(27,79,114,0.12)', border: '1px solid #E2E8F0' }}
-        >
+        <div className="card" style={{ padding: 32 }}>
           {children}
         </div>
       </div>

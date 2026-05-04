@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Calendar, Tag, ArrowLeft, BookOpen } from 'lucide-react';
+import { Calendar, ArrowLeft, BookOpen } from 'lucide-react';
 
 const CATEGORIES = ['הכל', 'השקעות נדל"ן', 'טיפים למשקיעים', 'שוק הנדל"ן', 'ספקים מומלצים'];
 
@@ -60,11 +60,11 @@ const ARTICLES = [
   },
 ];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  'השקעות נדל"ן': 'bg-blue-50 text-blue-700',
-  'טיפים למשקיעים': 'bg-amber-50 text-amber-700',
-  'שוק הנדל"ן': 'bg-emerald-50 text-emerald-700',
-  'ספקים מומלצים': 'bg-purple-50 text-purple-700',
+const CATEGORY_BADGE: Record<string, { bg: string; color: string }> = {
+  'השקעות נדל"ן': { bg: 'var(--blue-100)',   color: 'var(--blue-600)' },
+  'טיפים למשקיעים': { bg: 'var(--amber-100)', color: 'var(--amber-600)' },
+  'שוק הנדל"ן':    { bg: 'var(--green-100)',  color: 'var(--green-600)' },
+  'ספקים מומלצים': { bg: 'var(--purple-50)',  color: 'var(--purple-700)' },
 };
 
 export default function BlogPage() {
@@ -72,33 +72,39 @@ export default function BlogPage() {
   const rest = ARTICLES.filter(a => !a.featured);
 
   return (
-    <div className="min-h-screen bg-white" dir="rtl">
+    <div style={{ background: 'var(--white)', minHeight: '100vh' }} dir="rtl">
       {/* Page header */}
-      <div className="border-b border-slate-100 py-14 px-4" style={{ background: 'linear-gradient(160deg, #EFF6FF 0%, #FFFFFF 60%)' }}>
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 rounded-full px-4 py-1.5 text-sm font-semibold mb-4">
-            <BookOpen className="w-4 h-4" strokeWidth={1.75} />
+      <div style={{ borderBottom: '0.5px solid var(--gray-100)', padding: '56px 24px 48px', background: 'var(--white)' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            background: 'var(--gray-50)', border: '0.5px solid var(--gray-100)',
+            borderRadius: 'var(--radius-pill)', padding: '3px 12px',
+            fontSize: 12, fontWeight: 500, color: 'var(--gray-500)', marginBottom: 16,
+          }}>
+            <BookOpen size={12} strokeWidth={1.5} />
             בלוג השקעות
           </div>
-          <h1 className="text-4xl font-bold text-[#0F172A] mb-3">מדריכים ותובנות</h1>
-          <p className="text-slate-500 text-lg max-w-xl mx-auto">
+          <h1 style={{ fontSize: 22, fontWeight: 500, color: 'var(--gray-900)', marginBottom: 8 }}>מדריכים ותובנות</h1>
+          <p style={{ fontSize: 15, color: 'var(--gray-500)' }}>
             ידע מעשי להשקעות נדל"ן חכמות — מאנשי מקצוע עם ניסיון אמיתי בשטח
           </p>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-12">
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px 24px' }}>
         {/* Category filter */}
-        <div className="flex flex-wrap gap-2 mb-10">
-          {CATEGORIES.map(cat => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
+          {CATEGORIES.map((cat, i) => (
             <button
               key={cat}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all border ${
-                cat === 'הכל'
-                  ? 'text-white border-transparent'
-                  : 'bg-white border-slate-200 text-slate-600 hover:border-primary/40 hover:text-primary'
-              }`}
-              style={cat === 'הכל' ? { background: 'linear-gradient(135deg, #1B4F72, #2E86AB)', border: 'none' } : {}}
+              style={{
+                padding: '6px 14px', borderRadius: 'var(--radius-pill)',
+                fontSize: 13, fontWeight: 500, cursor: 'pointer', transition: 'all 0.15s ease',
+                background: i === 0 ? 'var(--gray-900)' : 'var(--white)',
+                color: i === 0 ? 'var(--white)' : 'var(--gray-500)',
+                border: i === 0 ? 'none' : '0.5px solid var(--gray-100)',
+              }}
             >
               {cat}
             </button>
@@ -107,103 +113,92 @@ export default function BlogPage() {
 
         {/* Featured article */}
         {featured && (
-          <div
-            className="rounded-2xl overflow-hidden border border-slate-100 mb-10 hover:shadow-lg transition-all duration-300 group"
-            style={{ boxShadow: '0 2px 12px rgba(15,23,42,0.06)' }}
-          >
-            <div
-              className="h-3 w-full"
-              style={{ background: 'linear-gradient(135deg, #1B4F72, #2E86AB)' }}
-            />
-            <div className="p-8 md:p-10">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
-                  מאמר מומלץ
-                </span>
-                <span className={`text-xs font-semibold px-3 py-1 rounded-full ${CATEGORY_COLORS[featured.category]}`}>
+          <div className="card" style={{ marginBottom: 24, padding: 32 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+              <span style={{
+                background: 'var(--gray-900)', color: 'var(--white)',
+                fontSize: 11, fontWeight: 500, padding: '3px 10px', borderRadius: 'var(--radius-pill)',
+              }}>
+                מאמר מומלץ
+              </span>
+              {CATEGORY_BADGE[featured.category] && (
+                <span style={{
+                  background: CATEGORY_BADGE[featured.category].bg,
+                  color: CATEGORY_BADGE[featured.category].color,
+                  fontSize: 11, fontWeight: 500, padding: '3px 10px', borderRadius: 'var(--radius-pill)',
+                }}>
                   {featured.category}
                 </span>
+              )}
+            </div>
+            <h2 style={{ fontSize: 18, fontWeight: 500, color: 'var(--gray-900)', marginBottom: 10 }}>
+              {featured.title}
+            </h2>
+            <p style={{ fontSize: 14, color: 'var(--gray-500)', lineHeight: 1.6, marginBottom: 20 }}>{featured.desc}</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 13, color: 'var(--gray-500)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <Calendar size={13} strokeWidth={1.5} />
+                  {featured.date}
+                </span>
+                <span>{featured.readTime}</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#0F172A] mb-3 group-hover:text-primary transition-colors">
-                {featured.title}
-              </h2>
-              <p className="text-slate-500 leading-relaxed mb-6 max-w-2xl">{featured.desc}</p>
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center gap-4 text-xs text-slate-400">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />
-                    {featured.date}
-                  </span>
-                  <span>{featured.readTime}</span>
-                </div>
-                <button
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700 hover:gap-3 transition-all duration-200"
-                >
-                  קרא עוד
-                  <ArrowLeft className="w-4 h-4" strokeWidth={2} />
-                </button>
-              </div>
+              <button className="btn-ghost" style={{ padding: 0, fontSize: 13 }}>
+                קרא עוד
+                <ArrowLeft size={13} strokeWidth={1.5} />
+              </button>
             </div>
           </div>
         )}
 
         {/* Articles grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 48 }}>
           {rest.map(article => (
-            <article
-              key={article.id}
-              className="rounded-2xl border border-slate-100 bg-white overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group flex flex-col"
-              style={{ boxShadow: '0 2px 12px rgba(15,23,42,0.06)' }}
-            >
-              <div
-                className="h-1.5 w-full"
-                style={{ background: 'linear-gradient(135deg, #1B4F72, #2E86AB)' }}
-              />
-              <div className="p-6 flex flex-col flex-1">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${CATEGORY_COLORS[article.category]}`}>
+            <article key={article.id} className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ marginBottom: 10 }}>
+                {CATEGORY_BADGE[article.category] && (
+                  <span style={{
+                    background: CATEGORY_BADGE[article.category].bg,
+                    color: CATEGORY_BADGE[article.category].color,
+                    fontSize: 11, fontWeight: 500, padding: '3px 10px', borderRadius: 'var(--radius-pill)',
+                  }}>
                     {article.category}
                   </span>
-                </div>
-                <h3 className="font-bold text-[#0F172A] text-base leading-snug mb-2 group-hover:text-primary transition-colors">
-                  {article.title}
-                </h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
-                  {article.desc}
-                </p>
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                    <Calendar className="w-3.5 h-3.5" strokeWidth={1.5} />
-                    {article.date}
-                  </div>
-                  <button className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-600 hover:gap-2.5 transition-all duration-200">
-                    קרא עוד
-                    <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2} />
-                  </button>
-                </div>
+                )}
+              </div>
+              <h3 style={{ fontWeight: 500, color: 'var(--gray-900)', fontSize: 14, lineHeight: 1.4, marginBottom: 8, flex: 1 }}>
+                {article.title}
+              </h3>
+              <p style={{ fontSize: 13, color: 'var(--gray-500)', lineHeight: 1.5, marginBottom: 16, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {article.desc}
+              </p>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: '0.5px solid var(--gray-100)' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--gray-500)' }}>
+                  <Calendar size={12} strokeWidth={1.5} />
+                  {article.date}
+                </span>
+                <button className="btn-ghost" style={{ padding: 0, fontSize: 12 }}>
+                  קרא עוד
+                  <ArrowLeft size={12} strokeWidth={1.5} />
+                </button>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Newsletter CTA */}
-        <div
-          className="mt-16 rounded-2xl p-8 md:p-10 text-center text-white"
-          style={{ background: 'linear-gradient(135deg, #0A1F30 0%, #1B4F72 60%, #2E86AB 100%)' }}
-        >
-          <h3 className="text-xl font-bold mb-2">קבל מאמרים חדשים ישירות למייל</h3>
-          <p className="text-blue-200 text-sm mb-6">ללא ספאם. רק תוכן איכותי, פעם בשבוע.</p>
-          <div className="flex gap-3 max-w-sm mx-auto">
+        {/* Newsletter */}
+        <div className="card" style={{ padding: 40, textAlign: 'center', background: 'var(--gray-50)' }}>
+          <h3 style={{ fontSize: 18, fontWeight: 500, color: 'var(--gray-900)', marginBottom: 8 }}>קבל מאמרים חדשים ישירות למייל</h3>
+          <p style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 24 }}>ללא ספאם. רק תוכן איכותי, פעם בשבוע.</p>
+          <div style={{ display: 'flex', gap: 8, maxWidth: 360, margin: '0 auto' }}>
             <input
               type="email"
               placeholder="your@email.com"
               dir="ltr"
-              className="flex-1 rounded-xl px-4 py-2.5 text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="input-field"
+              style={{ flex: 1, fontSize: 13 }}
             />
-            <button
-              className="px-5 py-2.5 rounded-xl text-sm font-bold text-white flex-shrink-0 transition-all duration-200"
-              style={{ background: 'linear-gradient(135deg, #F5A623, #E8920F)' }}
-            >
+            <button className="btn-primary" style={{ flexShrink: 0, fontSize: 13 }}>
               הרשם
             </button>
           </div>
