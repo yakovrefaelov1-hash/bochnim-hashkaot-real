@@ -159,16 +159,16 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 // Empty State
 // ============================================================
 export function EmptyState({ icon, title, desc, action }: {
-  icon: string;
+  icon: ReactNode;
   title: string;
   desc?: string;
   action?: ReactNode;
 }) {
   return (
     <div className="text-center py-16 px-4">
-      <div className="text-5xl mb-4">{icon}</div>
-      <h3 className="text-lg font-bold text-slate-700 mb-2">{title}</h3>
-      {desc && <p className="text-slate-400 text-sm mb-6 max-w-xs mx-auto">{desc}</p>}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16, color: 'var(--gray-300)' }}>{icon}</div>
+      <h3 style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-800)', marginBottom: 6 }}>{title}</h3>
+      {desc && <p style={{ fontSize: 13, color: 'var(--gray-500)', marginBottom: 24, maxWidth: 280, margin: '0 auto 24px' }}>{desc}</p>}
       {action}
     </div>
   );

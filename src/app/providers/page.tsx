@@ -147,7 +147,7 @@ function ProvidersContent() {
         <LoadingCenter />
       ) : !data?.data?.length ? (
         <EmptyState
-          icon="search"
+          icon={<Search size={36} strokeWidth={1} />}
           title="לא נמצאו ספקים"
           desc="נסה לשנות את הפילטרים"
           action={

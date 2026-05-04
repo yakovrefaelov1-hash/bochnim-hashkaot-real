@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore';
 import { apiGet, apiPatch } from '@/lib/api';
 import { ProviderProfile, PastDeal } from '@/types';
 import { LoadingCenter, Badge, EmptyState } from '@/components/ui/index';
+import { CheckCircle2 } from 'lucide-react';
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/lib/constants';
 import { formatDistanceToNow } from 'date-fns';
 import { he } from 'date-fns/locale';
@@ -62,7 +63,7 @@ export default function AdminPage() {
         {loadingProviders ? (
           <LoadingCenter />
         ) : !pendingProviders?.length ? (
-          <EmptyState icon="✅" title="אין ספקים ממתינים" desc="כל הספקים אושרו" />
+          <EmptyState icon={<CheckCircle2 size={36} strokeWidth={1} />} title="אין ספקים ממתינים" desc="כל הספקים אושרו" />
         ) : (
           <div className="space-y-4">
             {pendingProviders.map(provider => {

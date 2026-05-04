@@ -9,6 +9,7 @@ import { apiGet, apiPatch } from '@/lib/api';
 import { Tender, Quote, Notification } from '@/types';
 import { INVESTMENT_TYPE_LABELS, INVESTMENT_TYPE_ICONS, QUOTE_STATUS_COLORS, QUOTE_STATUS_LABELS } from '@/lib/constants';
 import { LoadingCenter, StarRating, Badge, EmptyState } from '@/components/ui/index';
+import { ClipboardList, SendHorizonal, Inbox, Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { he } from 'date-fns/locale';
 
@@ -48,11 +49,11 @@ export default function InvestorDashboard() {
       <div className="flex items-end justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-primary-800">
-            שלום, {user.full_name.split(' ')[0]} 👋
+            שלום, {user.full_name.split(' ')[0]}
           </h1>
           <p className="text-slate-500 mt-1">ברוך הבא לדשבורד המשקיע שלך</p>
         </div>
-        <Link href="/post-tender" className="btn-gold text-sm px-5 py-2.5 rounded-xl">
+        <Link href="/post-tender" className="btn-primary" style={{ fontSize: 13 }}>
           + מכרז חדש
         </Link>
       </div>
@@ -60,14 +61,16 @@ export default function InvestorDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-8">
         {[
-          { label: 'מכרזים פעילים', value: data?.stats.active_tenders ?? 0, icon: '📋', color: 'text-blue-600' },
-          { label: 'הצעות שהתקבלו', value: data?.stats.total_quotes ?? 0, icon: '📬', color: 'text-green-600' },
-          { label: 'ממתינות לתגובה', value: data?.stats.pending_quotes ?? 0, icon: '⏳', color: 'text-amber-600' },
+          { label: 'מכרזים פעילים', value: data?.stats.active_tenders ?? 0, Icon: ClipboardList },
+          { label: 'הצעות שהתקבלו', value: data?.stats.total_quotes ?? 0, Icon: Inbox },
+          { label: 'ממתינות לתגובה', value: data?.stats.pending_quotes ?? 0, Icon: Clock },
         ].map(s => (
-          <div key={s.label} className="card p-5 text-center">
-            <div className="text-2xl mb-1">{s.icon}</div>
-            <div className={`text-2xl font-black ${s.color}`}>{s.value}</div>
-            <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+          <div key={s.label} className="card-metric" style={{ textAlign: 'center', padding: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8, color: 'var(--gray-500)' }}>
+              <s.Icon size={20} strokeWidth={1.5} />
+            </div>
+            <div style={{ fontSize: 22, fontWeight: 500, color: 'var(--gray-900)' }}>{s.value}</div>
+            <div style={{ fontSize: 12, color: 'var(--gray-500)', marginTop: 2 }}>{s.label}</div>
           </div>
         ))}
       </div>
@@ -79,7 +82,7 @@ export default function InvestorDashboard() {
             <h2 className="font-bold text-slate-800 mb-4">המכרזים שלי</h2>
             {!data?.tenders?.length ? (
               <EmptyState
-                icon="📋"
+                icon={<ClipboardList size={36} strokeWidth={1} />}
                 title="עדיין לא פרסמת מכרז"
                 desc="פרסם מכרז בחינם וקבל הצעות מספקים"
                 action={<Link href="/post-tender" className="btn-primary inline-block text-sm">פרסם מכרז חינמית</Link>}

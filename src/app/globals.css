@@ -196,7 +196,7 @@ body {
     flex-shrink: 0;
   }
   .step-active  { background: var(--gray-900); color: var(--white); }
-  .step-done    { background: var(--green-600); color: var(--white); }
+  .step-done    { background: var(--gray-900); color: var(--white); }
   .step-inactive{ background: var(--gray-50); color: var(--gray-500); border: 0.5px solid var(--gray-100); }
 
   .invest-card {

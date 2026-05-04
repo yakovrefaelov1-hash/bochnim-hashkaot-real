@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { apiPost } from '@/lib/api';
 import { useAuthStore, AuthUser } from '@/store/authStore';
 import { AuthLayout } from '../_components/AuthLayout';
+import { TrendingUp, Building2 } from 'lucide-react';
 
 interface RegisterForm {
   full_name: string;
@@ -60,16 +61,17 @@ function RegisterContent() {
           <label className="label">אני...</label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: 'investor', label: '💼 משקיע', desc: 'מחפש הזדמנויות' },
-              { value: 'provider', label: '🏗️ ספק', desc: 'יזם / יועץ / מלווה' },
+              { value: 'investor', label: 'משקיע', desc: 'מחפש הזדמנויות', Icon: TrendingUp },
+              { value: 'provider', label: 'ספק', desc: 'יזם / יועץ / מלווה', Icon: Building2 },
             ].map(opt => (
               <label
                 key={opt.value}
-                className={`cursor-pointer rounded-xl border-2 p-3 text-center transition-all ${
-                  role === opt.value
-                    ? 'border-primary bg-primary-50'
-                    : 'border-slate-200 hover:border-slate-300'
-                }`}
+                style={{
+                  cursor: 'pointer', borderRadius: 'var(--radius-lg)',
+                  border: role === opt.value ? '1.5px solid var(--gray-900)' : '0.5px solid var(--gray-100)',
+                  padding: 16, textAlign: 'center', transition: 'border-color 0.15s ease',
+                  display: 'block',
+                }}
               >
                 <input
                   type="radio"
@@ -77,11 +79,11 @@ function RegisterContent() {
                   {...register('role')}
                   className="sr-only"
                 />
-                <div className="text-lg">{opt.label.split(' ')[0]}</div>
-                <div className={`text-xs font-semibold mt-0.5 ${role === opt.value ? 'text-primary-700' : 'text-slate-700'}`}>
-                  {opt.label.split(' ').slice(1).join(' ')}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8, color: role === opt.value ? 'var(--gray-900)' : 'var(--gray-500)' }}>
+                  <opt.Icon size={20} strokeWidth={1.5} />
                 </div>
-                <div className="text-xs text-slate-400">{opt.desc}</div>
+                <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--gray-900)' }}>{opt.label}</div>
+                <div style={{ fontSize: 12, color: 'var(--gray-500)', marginTop: 2 }}>{opt.desc}</div>
               </label>
             ))}
           </div>

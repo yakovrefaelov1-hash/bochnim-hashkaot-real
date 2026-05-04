@@ -9,6 +9,7 @@ import { apiGet } from '@/lib/api';
 import { Quote, PastDeal, Notification } from '@/types';
 import { QUOTE_STATUS_COLORS, QUOTE_STATUS_LABELS, INVESTMENT_TYPE_LABELS } from '@/lib/constants';
 import { LoadingCenter, Badge, EmptyState, StarRating } from '@/components/ui/index';
+import { SendHorizonal } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { he } from 'date-fns/locale';
 
@@ -104,7 +105,7 @@ export default function ProviderDashboard() {
             <h2 className="font-bold text-slate-800 mb-4">ההצעות שלי</h2>
             {!quotes?.length ? (
               <EmptyState
-                icon="📤"
+                icon={<SendHorizonal size={36} strokeWidth={1} />}
                 title="עדיין לא הגשת הצעות"
                 desc="גלוש במכרזים הפעילים והגש הצעות למשקיעים"
                 action={<Link href="/tenders" className="btn-primary inline-block text-sm">עיין במכרזים</Link>}
